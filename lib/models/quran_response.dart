@@ -1,14 +1,26 @@
+import 'package:hive/hive.dart';
+
+part 'quran_response.g.dart';
+
+@HiveType(typeId: 0)
 class QuranResponse {
+  @HiveField(0)
   int? code;
+
+  @HiveField(1)
   String? status;
+
+  @HiveField(2)
   Data? data;
 
   QuranResponse({this.code, this.status, this.data});
 
-  QuranResponse.fromJson(Map<String, dynamic> json) {
-    code = json['code'];
-    status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+  factory QuranResponse.fromJson(Map<String, dynamic> json) {
+    return QuranResponse(
+      code: json['code'],
+      status: json['status'],
+      data: json['data'] != null ? Data.fromJson(json['data']) : null,
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -22,21 +34,26 @@ class QuranResponse {
   }
 }
 
+@HiveType(typeId: 1)
 class Data {
+  @HiveField(0)
   List<Surahs>? surahs;
+
+  @HiveField(1)
   Edition? edition;
 
   Data({this.surahs, this.edition});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  factory Data.fromJson(Map<String, dynamic> json) {
     if (json['surahs'] != null) {
-      surahs = <Surahs>[];
+      final List<Surahs> surahsList = [];
       json['surahs'].forEach((v) {
-        surahs!.add(new Surahs.fromJson(v));
+        surahsList.add(Surahs.fromJson(v));
       });
+      return Data(
+          surahs: surahsList, edition: Edition.fromJson(json['edition']));
     }
-    edition =
-    json['edition'] != null ? new Edition.fromJson(json['edition']) : null;
+    return Data();
   }
 
   Map<String, dynamic> toJson() {
@@ -51,128 +68,165 @@ class Data {
   }
 }
 
+@HiveType(typeId: 2)
 class Surahs {
+  @HiveField(0)
   int? number;
+
+  @HiveField(1)
   String? name;
+
+  @HiveField(2)
   String? englishName;
+
+  @HiveField(3)
   String? englishNameTranslation;
+
+  @HiveField(4)
   String? revelationType;
+
+  @HiveField(5)
   List<Ayahs>? ayahs;
 
-  Surahs(
-      {this.number,
-        this.name,
-        this.englishName,
-        this.englishNameTranslation,
-        this.revelationType,
-        this.ayahs});
+  Surahs({
+    this.number,
+    this.name,
+    this.englishName,
+    this.englishNameTranslation,
+    this.revelationType,
+    this.ayahs,
+  });
 
-  Surahs.fromJson(Map<String, dynamic> json) {
-    number = json['number'];
-    name = json['name'];
-    englishName = json['englishName'];
-    englishNameTranslation = json['englishNameTranslation'];
-    revelationType = json['revelationType'];
-    if (json['ayahs'] != null) {
-      ayahs = <Ayahs>[];
-      json['ayahs'].forEach((v) {
-        ayahs!.add(new Ayahs.fromJson(v));
-      });
-    }
+  factory Surahs.fromJson(Map<String, dynamic> json) {
+    return Surahs(
+      number: json['number'],
+      name: json['name'],
+      englishName: json['englishName'],
+      englishNameTranslation: json['englishNameTranslation'],
+      revelationType: json['revelationType'],
+      ayahs:
+          List<Ayahs>.from(json['ayahs']?.map((x) => Ayahs.fromJson(x)) ?? []),
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['number'] = this.number;
-    data['name'] = this.name;
-    data['englishName'] = this.englishName;
-    data['englishNameTranslation'] = this.englishNameTranslation;
-    data['revelationType'] = this.revelationType;
-    if (this.ayahs != null) {
-      data['ayahs'] = this.ayahs!.map((v) => v.toJson()).toList();
-    }
-    return data;
+    return {
+      'number': number,
+      'name': name,
+      'englishName': englishName,
+      'englishNameTranslation': englishNameTranslation,
+      'revelationType': revelationType,
+      'ayahs': ayahs?.map((x) => x.toJson()).toList(),
+    };
   }
 }
 
+@HiveType(typeId: 3)
 class Ayahs {
+  @HiveField(0)
   int? number;
+
+  @HiveField(1)
   String? text;
+
+  @HiveField(2)
   int? numberInSurah;
+
+  @HiveField(3)
   int? juz;
+
+  @HiveField(4)
   int? manzil;
+
+  @HiveField(5)
   int? page;
+
+  @HiveField(6)
   int? ruku;
+
+  @HiveField(7)
   int? hizbQuarter;
 
-  Ayahs(
-      {this.number,
-        this.text,
-        this.numberInSurah,
-        this.juz,
-        this.manzil,
-        this.page,
-        this.ruku,
-        this.hizbQuarter});
+  Ayahs({
+    this.number,
+    this.text,
+    this.numberInSurah,
+    this.juz,
+    this.manzil,
+    this.page,
+    this.ruku,
+    this.hizbQuarter,
+  });
 
-  Ayahs.fromJson(Map<String, dynamic> json) {
-    number = json['number'];
-    text = json['text'];
-    numberInSurah = json['numberInSurah'];
-    juz = json['juz'];
-    manzil = json['manzil'];
-    page = json['page'];
-    ruku = json['ruku'];
-    hizbQuarter = json['hizbQuarter'];
+  factory Ayahs.fromJson(Map<String, dynamic> json) {
+    return Ayahs(
+      number: json['number'],
+      text: json['text'],
+      numberInSurah: json['numberInSurah'],
+      juz: json['juz'],
+      manzil: json['manzil'],
+      page: json['page'],
+      ruku: json['ruku'],
+      hizbQuarter: json['hizbQuarter'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['number'] = this.number;
-    data['text'] = this.text;
-    data['numberInSurah'] = this.numberInSurah;
-    data['juz'] = this.juz;
-    data['manzil'] = this.manzil;
-    data['page'] = this.page;
-    data['ruku'] = this.ruku;
-    data['hizbQuarter'] = this.hizbQuarter;
-    return data;
+    return {
+      'number': number,
+      'text': text,
+      'numberInSurah': numberInSurah,
+      'juz': juz,
+      'manzil': manzil,
+      'page': page,
+      'ruku': ruku,
+      'hizbQuarter': hizbQuarter,
+    };
   }
 }
 
+@HiveType(typeId: 4)
 class Edition {
+  @HiveField(0)
   String? identifier;
+
+  @HiveField(1)
   String? language;
+
+  @HiveField(2)
   String? name;
+
+  @HiveField(3)
   String? englishName;
+
+  @HiveField(4)
   String? format;
-  String? type;
 
-  Edition(
-      {this.identifier,
-        this.language,
-        this.name,
-        this.englishName,
-        this.format,
-        this.type});
+  Edition({
+    this.identifier,
+    this.language,
+    this.name,
+    this.englishName,
+    this.format,
+  });
 
-  Edition.fromJson(Map<String, dynamic> json) {
-    identifier = json['identifier'];
-    language = json['language'];
-    name = json['name'];
-    englishName = json['englishName'];
-    format = json['format'];
-    type = json['type'];
+  factory Edition.fromJson(Map<String, dynamic> json) {
+    return Edition(
+      identifier: json['identifier'],
+      language: json['language'],
+      name: json['name'],
+      englishName: json['englishName'],
+      format: json['format'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['identifier'] = this.identifier;
-    data['language'] = this.language;
-    data['name'] = this.name;
-    data['englishName'] = this.englishName;
-    data['format'] = this.format;
-    data['type'] = this.type;
-    return data;
+    return {
+      'identifier': identifier,
+      'language': language,
+      'name': name,
+      'englishName': englishName,
+      'format': format,
+    };
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../data/constants.dart';
+
 class DuaPage extends StatefulWidget {
   const DuaPage({super.key});
 
@@ -10,7 +12,16 @@ class DuaPage extends StatefulWidget {
 class _DuaPageState extends State<DuaPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          'Duolar',
+          style: TextStyle(
+              color: Constants.primaryColor, fontWeight: FontWeight.bold),
+        ),
+        scrolledUnderElevation: 0,
+      ),
       body: Center(child: Text('Dua Page'),),
     );
   }

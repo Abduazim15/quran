@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:quron/bloc/like_bloc.dart';
 import 'package:quron/bloc/surah_bloc.dart';
 import 'package:quron/models/quran_response.dart';
 import 'package:quron/screens/home.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => QuranBloc()..add(QuranLoad()),),
           BlocProvider(create: (context) => SurahBloc()),
+          BlocProvider(create: (context) => LikeBloc()..add(LikeLoad())),
         ],
         child: const MainScreen(),
       ),

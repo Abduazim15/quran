@@ -28,100 +28,111 @@ class _QuranPageState extends State<QuranPage> {
           });
         }
       },
-      child: BlocBuilder<QuranBloc, QuranState>(builder: (context, state) {
-        if (state is QuranLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is QuranLoaded) {
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BlocProvider(
-                                  create: (context) => SurahBloc()
-                                    ..add(SurahLoad(surahNum: index)),
-                                  child: SurahScreen(
-                                    surahNumber: index,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'Qur\'oni Karim',
+            style: TextStyle(
+                color: Constants.primaryColor, fontWeight: FontWeight.bold),
+          ),
+          scrolledUnderElevation: 0,
+        ),
+        body: BlocBuilder<QuranBloc, QuranState>(builder: (context, state) {
+          if (state is QuranLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is QuranLoaded) {
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BlocProvider(
+                                    create: (context) => SurahBloc()
+                                      ..add(SurahLoad(surahNum: index)),
+                                    child: SurahScreen(
+                                      surahNumber: index,
+                                    ),
                                   ),
                                 ),
+                              );
+                            },
+                            child: ListTile(
+                              title: Text(
+                                surahsOnlyName[index].name,
+                                style: TextStyle(
+                                    color: Constants.primaryTextColor,
+                                    fontWeight: FontWeight.bold),
                               ),
-                            );
-                          },
-                          child: ListTile(
-                            title: Text(
-                              surahsOnlyName[index].name,
-                              style: TextStyle(
-                                  color: Constants.primaryTextColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text(
-                              '${surahsOnlyName[index].ayahsNumber} oyatdan iborat',
-                              style: TextStyle(color: Constants.greyColor),
-                            ),
-                            trailing: Text(
-                              surahsOnlyName[index]
-                                  .arabicName
-                                  .split(' ')
-                                  .sublist(1)
-                                  .join(' '),
-                              style: TextStyle(
-                                  color: Constants.primaryColor,
-                                  fontSize: 18,
-                                  fontFamily: 'MADDINA',
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            leading: Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Constants.primaryColor, width: 1),
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: Center(
-                                  child: Text(
-                                surahsOnlyName[index].order.toString(),
-                                style: const TextStyle(fontSize: 14),
-                              )),
+                              subtitle: Text(
+                                '${surahsOnlyName[index].ayahsNumber} oyatdan iborat',
+                                style: TextStyle(color: Constants.greyColor),
+                              ),
+                              trailing: Text(
+                                surahsOnlyName[index]
+                                    .arabicName
+                                    .split(' ')
+                                    .sublist(1)
+                                    .join(' '),
+                                style: TextStyle(
+                                    color: Constants.primaryColor,
+                                    fontSize: 18,
+                                    fontFamily: 'MADDINA',
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              leading: Container(
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Constants.primaryColor, width: 1),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Center(
+                                    child: Text(
+                                  surahsOnlyName[index].order.toString(),
+                                  style: const TextStyle(fontSize: 14),
+                                )),
+                              ),
                             ),
                           ),
-                        ),
-                        const Divider(
-                          height: 1,
-                        )
-                      ],
-                    );
-                  },
-                  itemCount: surahsOnlyName.length,
-                  physics: const BouncingScrollPhysics(),
+                          const Divider(
+                            height: 1,
+                          )
+                        ],
+                      );
+                    },
+                    itemCount: surahsOnlyName.length,
+                    physics: const BouncingScrollPhysics(),
+                  ),
                 ),
-              ),
-            ],
-          );
-        } else {
-          return Center(
-            child: Column(
-              children: [
-                const Text("Something went wrong!"),
-                OutlinedButton(
-                  onPressed: () {
-                    context.read<QuranBloc>().add(QuranLoad());
-                  },
-                  child: const Icon(Icons.refresh),
-                )
               ],
-            ),
-          );
-        }
-      }),
+            );
+          } else {
+            return Center(
+              child: Column(
+                children: [
+                  const Text("Something went wrong!"),
+                  OutlinedButton(
+                    onPressed: () {
+                      context.read<QuranBloc>().add(QuranLoad());
+                    },
+                    child: const Icon(Icons.refresh),
+                  )
+                ],
+              ),
+            );
+          }
+        }),
+      ),
     );
   }
 

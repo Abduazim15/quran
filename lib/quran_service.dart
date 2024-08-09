@@ -40,12 +40,14 @@ class QuranService {
 
   Future<void> setAsLiked(int surahNumber, int ayahNumber) async {
     // if(boxLike.values.where((element) => element == ayah).isEmpty) {
-    await boxLike.put('$surahNumber:$ayahNumber','$surahNumber:$ayahNumber');
+    await boxLike.put('$surahNumber:$ayahNumber', '$surahNumber:$ayahNumber');
+    print('liking $surahNumber:$ayahNumber');
   }
 
   Future<void> setAsDisliked(int surahNumber, int ayahNumber) async {
     // if(boxLike.values.where((element) => element == ayah).isNotEmpty) {
     await boxLike.delete('$surahNumber:$ayahNumber');
+    print('disliking $surahNumber:$ayahNumber');
   }
 
   Future<List<int>> getAllLikedAyahFromSurah(int surahNumber) async {
@@ -59,12 +61,23 @@ class QuranService {
     }
     return ayahs;
   }
-  Future<List<Ayahs>> getAllFavorites() async{
-    List<Ayahs> ayahs = [];
+
+  Future<List<Map<String, dynamic>>> getAllFavorites() async {
+    List<Map<String, dynamic>> ayahs = [];
     var quran = await box.get('1') as QuranResponse;
     var quran_uz = await box_uz.get('1') as QuranResponse;
-
+    List<String> order = boxLike.values.toList();
+    for (String i in order) {
+      List<String> numbers = i.split(':');
+      var arabic = quran.data!.surahs![int.parse(numbers[0])].ayahs![int.parse(numbers[1])];
+      var map = {
+        'arabic': arabic,
+        'uzbek': quran_uz.data!.surahs![int.parse(numbers[0])].ayahs![int.parse(numbers[1])].text,
+        'surah_num': int.parse(numbers[0])
+      };
+      ayahs.add(map);
+    }
+    print(ayahs.iterator);
     return ayahs;
-
   }
 }

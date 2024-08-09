@@ -31,15 +31,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Qur\'oni Karim',
-          style: TextStyle(
-              color: Constants.primaryColor, fontWeight: FontWeight.bold),
-        ),
-        scrolledUnderElevation: 0,
-      ),
       body: IndexedStack(
         index: currentPage,
         children: pages,

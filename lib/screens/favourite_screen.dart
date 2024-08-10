@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quron/bloc/like_bloc.dart';
 import 'package:quron/bloc/surah_bloc.dart';
 import 'package:quron/models/quran_response.dart';
@@ -36,10 +38,13 @@ class _FavouritedPageState extends State<FavouritedPage> {
     return BlocListener<LikeBloc, LikeState>(
       listener: (context, state) {
         if (state is LikeLoaded) {
+          surahNames.clear();
           var quranState = context.read<QuranBloc>().state as QuranLoaded;
           for(var ayah in state.ayahs){
+
             surahNames.add(quranState.surahs_uz[ayah['surah_num']].englishName!);
           }
+          print(surahNames.toString());
           setState(() {
             ayahs = state.ayahs;
           });
@@ -58,12 +63,13 @@ class _FavouritedPageState extends State<FavouritedPage> {
         body: BlocBuilder<LikeBloc, LikeState>(
           builder: (context, state) {
             if (state is LikeLoaded) {
+              if(state.ayahs.isNotEmpty){
               return VisibilityDetector(
                 onVisibilityChanged: (info) {
                   print('visibility changed');
                   context.read<LikeBloc>().add(LikeLoad());
                 },
-                key: Key('likes'),
+                key: const Key('likes'),
                 child: Column(
                   children: [
                     Expanded(
@@ -133,7 +139,18 @@ class _FavouritedPageState extends State<FavouritedPage> {
                                     Align(
                                       alignment: Alignment.topRight,
                                       child: Text(
-                                        (ayahs[index]['arabic'] as Ayahs).text!,
+                                        (ayahs[
+                                        index]
+                                        ['arabic']
+                                        as Ayahs)
+                                            .numberInSurah! == 1 && (ayahs[
+                                        index]
+                                        ['arabic']
+                                        as Ayahs)
+                                            .page!=1 ?
+                                      (ayahs[index]['arabic'] as Ayahs).text!.split(' ').sublist(4).join(' '):
+                                        (ayahs[index]['arabic'] as Ayahs).text!
+                                        ,
                                         style: TextStyle(
                                             fontSize: 24,
                                             fontFamily: 'MADDINA',
@@ -165,7 +182,19 @@ class _FavouritedPageState extends State<FavouritedPage> {
                             }))
                   ],
                 ),
-              );
+              );}
+              else {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Lottie.asset('assets/animation/empty.json', width: MediaQuery.of(context).size.width*0.7),
+                      SizedBox(height: 20),
+                      Text('Saqlangan oyatlar yo\'q', style: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 20),)
+                    ],
+                  ),
+                );
+              }
             } else {
               return const CircularProgressIndicator();
             }

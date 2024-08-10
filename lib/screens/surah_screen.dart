@@ -115,19 +115,19 @@ class _SurahScreenState extends State<SurahScreen> {
                                       onPressed: () {
                                         setState(() {
 
-                                          if (likes.contains(index+1)) {
+                                          if (likes.contains(index)) {
                                             print('disliking');
-                                            context.read<SurahBloc>().add(SurahSetLike(ayahNumber: index+1,  setLike: false, surahNumber: widget.surahNumber));
-                                            likes.remove(index+1);
+                                            context.read<SurahBloc>().add(SurahSetLike(ayahNumber: index,  setLike: false, surahNumber: widget.surahNumber));
+                                            likes.remove(index);
                                           } else {
                                             print('liking');
-                                            context.read<SurahBloc>().add(SurahSetLike(ayahNumber: index+1, setLike: true, surahNumber: widget.surahNumber));
-                                            likes.add(index+1);
+                                            context.read<SurahBloc>().add(SurahSetLike(ayahNumber: index, setLike: true, surahNumber: widget.surahNumber));
+                                            likes.add(index);
                                           }
                                         });
                                       },
                                       icon: Icon(
-                                        likes.contains(index+1)
+                                        likes.contains(index)
                                             ? Icons.favorite
                                             : Icons.favorite_border_outlined,
                                         color: Constants.primaryColor,

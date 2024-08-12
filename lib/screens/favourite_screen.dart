@@ -38,11 +38,12 @@ class _FavouritedPageState extends State<FavouritedPage> {
     return BlocListener<LikeBloc, LikeState>(
       listener: (context, state) {
         if (state is LikeLoaded) {
+          if(state.ayahs.isEmpty) return;
           surahNames.clear();
           var quranState = context.read<QuranBloc>().state as QuranLoaded;
-          for(var ayah in state.ayahs){
-
-            surahNames.add(quranState.surahs_uz[ayah['surah_num']].englishName!);
+          for (var ayah in state.ayahs) {
+            surahNames
+                .add(quranState.surahs_uz[ayah['surah_num']].englishName!);
           }
           print(surahNames.toString());
           setState(() {
@@ -50,38 +51,39 @@ class _FavouritedPageState extends State<FavouritedPage> {
           });
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            'Saqlanganlar',
-            style: TextStyle(
-                color: Constants.primaryColor, fontWeight: FontWeight.bold),
+      child: VisibilityDetector(
+        onVisibilityChanged: (info) {
+          print('visibility changed');
+          context.read<LikeBloc>().add(LikeLoad());
+        },
+        key: const Key('likes'),
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(
+              'Saqlanganlar',
+              style: TextStyle(
+                  color: Constants.primaryColor, fontWeight: FontWeight.bold),
+            ),
+            scrolledUnderElevation: 0,
           ),
-          scrolledUnderElevation: 0,
-        ),
-        body: BlocBuilder<LikeBloc, LikeState>(
-          builder: (context, state) {
-            if (state is LikeLoaded) {
-              if(state.ayahs.isNotEmpty){
-              return VisibilityDetector(
-                onVisibilityChanged: (info) {
-                  print('visibility changed');
-                  context.read<LikeBloc>().add(LikeLoad());
-                },
-                key: const Key('likes'),
-                child: Column(
-                  children: [
-                    Expanded(
+          body: BlocBuilder<LikeBloc, LikeState>(
+            builder: (context, state) {
+              if (state is LikeLoaded) {
+                if (state.ayahs.isNotEmpty) {
+                  return Column(
+                    children: [
+                      Expanded(
                         child: ListView.builder(
                             itemCount: ayahs.length,
                             itemBuilder: (context, index) {
                               return Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 20),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20),
                                 width: double.infinity,
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       height: 47,
@@ -97,7 +99,8 @@ class _FavouritedPageState extends State<FavouritedPage> {
                                           Text(
                                             surahNames[index],
                                             style: TextStyle(
-                                                color: Constants.primaryColor, fontWeight: FontWeight.bold),
+                                                color: Constants.primaryColor,
+                                                fontWeight: FontWeight.bold),
                                           ),
                                           const Spacer(),
                                           //share and save
@@ -114,11 +117,12 @@ class _FavouritedPageState extends State<FavouritedPage> {
                                                 print('disliking');
                                                 context.read<SurahBloc>().add(
                                                     SurahSetLike(
-                                                        ayahNumber: (ayahs[
-                                                                        index]
-                                                                    ['arabic']
-                                                                as Ayahs)
-                                                            .numberInSurah!-1,
+                                                        ayahNumber: (ayahs[index]
+                                                                        [
+                                                                        'arabic']
+                                                                    as Ayahs)
+                                                                .numberInSurah! -
+                                                            1,
                                                         setLike: false,
                                                         surahNumber: ayahs[
                                                                     index]
@@ -139,34 +143,35 @@ class _FavouritedPageState extends State<FavouritedPage> {
                                     Align(
                                       alignment: Alignment.topRight,
                                       child: Text(
-                                        (ayahs[
-                                        index]
-                                        ['arabic']
-                                        as Ayahs)
-                                            .numberInSurah! == 1 && (ayahs[
-                                        index]
-                                        ['arabic']
-                                        as Ayahs)
-                                            .page!=1 ?
-                                      (ayahs[index]['arabic'] as Ayahs).text!.split(' ').sublist(4).join(' '):
-                                        (ayahs[index]['arabic'] as Ayahs).text!
-                                        ,
+                                        (ayahs[index]['arabic'] as Ayahs)
+                                                        .numberInSurah! ==
+                                                    1 &&
+                                                (ayahs[index]['arabic']
+                                                            as Ayahs)
+                                                        .page !=
+                                                    1
+                                            ? (ayahs[index]['arabic']
+                                                    as Ayahs)
+                                                .text!
+                                                .split(' ')
+                                                .sublist(4)
+                                                .join(' ')
+                                            : (ayahs[index]['arabic']
+                                                    as Ayahs)
+                                                .text!,
                                         style: TextStyle(
                                             fontSize: 24,
                                             fontFamily: 'MADDINA',
                                             fontWeight: FontWeight.bold,
-                                            color: Constants.primaryTextColor),
+                                            color:
+                                                Constants.primaryTextColor),
                                         textDirection: TextDirection.rtl,
                                         softWrap: true,
                                       ),
                                     ),
                                     const SizedBox(height: 15),
                                     Text(
-                                      '${(ayahs[
-                                      index]
-                                      ['arabic']
-                                      as Ayahs)
-                                          .numberInSurah!}. ${ayahs[index]['uzbek']}',
+                                      '${(ayahs[index]['arabic'] as Ayahs).numberInSurah!}. ${ayahs[index]['uzbek']}',
                                       style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
@@ -179,26 +184,32 @@ class _FavouritedPageState extends State<FavouritedPage> {
                                   ],
                                 ),
                               );
-                            }))
-                  ],
-                ),
-              );}
-              else {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Lottie.asset('assets/animation/empty.json', width: MediaQuery.of(context).size.width*0.7),
-                      SizedBox(height: 20),
-                      Text('Saqlangan oyatlar yo\'q', style: GoogleFonts.nunito(fontWeight: FontWeight.bold, fontSize: 20),)
+                            }),
+                      )
                     ],
-                  ),
-                );
+                  );
+                } else {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Lottie.asset('assets/animation/empty.json',
+                            width: MediaQuery.of(context).size.width * 0.7),
+                        SizedBox(height: 20),
+                        Text(
+                          'Saqlangan oyatlar yo\'q',
+                          style: GoogleFonts.nunito(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        )
+                      ],
+                    ),
+                  );
+                }
+              } else {
+                return const CircularProgressIndicator();
               }
-            } else {
-              return const CircularProgressIndicator();
-            }
-          },
+            },
+          ),
         ),
       ),
     );

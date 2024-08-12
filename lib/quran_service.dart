@@ -64,9 +64,10 @@ class QuranService {
 
   Future<List<Map<String, dynamic>>> getAllFavorites() async {
     List<Map<String, dynamic>> ayahs = [];
-    var quran = await box.get('1') as QuranResponse;
-    var quran_uz = await box_uz.get('1') as QuranResponse;
+    var quran = await box.get('1') as QuranResponse?;
+    var quran_uz = await box_uz.get('1') as QuranResponse?;
     List<String> order = boxLike.values.toList();
+    if(quran_uz ==null || quran == null) return [];
     for (String i in order) {
       List<String> numbers = i.split(':');
       var arabic = quran.data!.surahs![int.parse(numbers[0])].ayahs![int.parse(numbers[1])];

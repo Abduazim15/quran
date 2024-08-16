@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../data/constants.dart';
-import '../data/duas.dart';
+import '../../data/constants.dart';
+import '../../data/duas.dart';
 
 class ReadDuaScreen extends StatefulWidget {
   const ReadDuaScreen({super.key, required this.dua});

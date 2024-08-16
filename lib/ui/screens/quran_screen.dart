@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quron/screens/surah_screen.dart';
+import 'package:quron/ui/screens/surah_screen.dart';
 
-import '../bloc/quran_bloc.dart';
-import '../bloc/surah_bloc.dart';
-import '../data/constants.dart';
-import '../models/quran_response.dart';
-import '../models/surah.dart';
+import '../../bloc/quran_bloc.dart';
+import '../../bloc/surah_bloc.dart';
+import '../../data/constants.dart';
+import '../../models/quran_response.dart';
+import '../../models/surah.dart';
 
 class QuranPage extends StatefulWidget {
   const QuranPage({super.key});

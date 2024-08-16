@@ -1,4 +1,4 @@
-package com.lokki.quron
+package com.noorly.quron
 
 import io.flutter.embedding.android.FlutterActivity
 

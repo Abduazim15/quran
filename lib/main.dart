@@ -4,7 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:quron/bloc/like_bloc.dart';
 import 'package:quron/bloc/surah_bloc.dart';
 import 'package:quron/models/quran_response.dart';
-import 'package:quron/screens/home.dart';
+import 'package:quron/ui/screens/main_screen.dart';
 
 import 'bloc/quran_bloc.dart';
 

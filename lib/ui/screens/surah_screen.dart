@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quron/bloc/surah_bloc.dart';
 
-import '../data/constants.dart';
-import '../models/quran_response.dart';
-
+import '../../data/constants.dart';
+import '../../models/quran_response.dart';
 class SurahScreen extends StatefulWidget {
   const SurahScreen({super.key, required this.surahNumber});
 

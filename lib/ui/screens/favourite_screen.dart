@@ -7,8 +7,9 @@ import 'package:quron/bloc/surah_bloc.dart';
 import 'package:quron/models/quran_response.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-import '../bloc/quran_bloc.dart';
-import '../data/constants.dart';
+import '../../bloc/quran_bloc.dart';
+import '../../data/constants.dart';
+
 
 class FavouritedPage extends StatefulWidget {
   const FavouritedPage({super.key});

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:quron/bloc/quran_bloc.dart';
 import 'package:quron/data/constants.dart';
-import 'package:quron/screens/dua_screen.dart';
-import 'package:quron/screens/favourite_screen.dart';
-import 'package:quron/screens/quran_screen.dart';
-import '../models/quran_response.dart';
-import '../models/surah.dart';
+import 'package:quron/ui/screens/home_screen.dart';
+import 'package:quron/ui/screens/quran_screen.dart';
+import 'dua_screen.dart';
+import 'favourite_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -22,7 +20,12 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    pages = [QuranPage(), const DuaPage(), const FavouritedPage()];
+    pages = [
+      HomeScreen(),
+      QuranPage(),
+      DuaPage(),
+      const FavouritedPage(),
+    ];
     super.initState();
   }
 
@@ -36,6 +39,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: ''),
             BottomNavigationBarItem(icon: Icon(Icons.book_outlined), label: ''),
             BottomNavigationBarItem(
                 icon: Icon(Icons.lightbulb_outlined), label: ''),
@@ -62,10 +66,9 @@ class _MainScreenState extends State<MainScreen> {
               alignment: Alignment.center,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  border: Border.all(color: Constants.primaryColor)
-                ),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    border: Border.all(color: Constants.primaryColor)),
                 width: MediaQuery.of(context).size.width * 0.7,
                 height: MediaQuery.of(context).size.height * 0.2,
                 alignment: Alignment.center,
@@ -79,8 +82,7 @@ class _MainScreenState extends State<MainScreen> {
                         child: const Text(
                           'Qur\'on oyatlari va tarjimalari yuklanmoqda.\n(15 Mb talab etiladi!)',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
+                              fontWeight: FontWeight.bold, fontSize: 16),
                           textAlign: TextAlign.center,
                         ))
                   ],

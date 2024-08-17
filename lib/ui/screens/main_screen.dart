@@ -14,14 +14,15 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
+final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(0);
+
 class _MainScreenState extends State<MainScreen> {
-  int currentPage = 0;
   List<Widget> pages = [];
 
   @override
   void initState() {
     pages = [
-      HomeScreen(),
+      HomeScreen(selectedIndexNotifier: _selectedIndex,),
       QuranPage(),
       DuaPage(),
       const FavouritedPage(),
@@ -33,31 +34,43 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Scaffold(
-        body: IndexedStack(
-          index: currentPage,
-          children: pages,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: ''),
-            BottomNavigationBarItem(icon: Icon(Icons.book_outlined), label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.lightbulb_outlined), label: ''),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.favorite_border_outlined), label: ''),
-          ],
-          showSelectedLabels: false,
-          currentIndex: currentPage,
-          selectedItemColor: Constants.primaryColor,
-          showUnselectedLabels: false,
-          unselectedItemColor: Constants.greyColor,
-          onTap: (index) {
-            setState(() {
-              currentPage = index;
-            });
-          },
-        ),
-      ),
+          body: ValueListenableBuilder(
+            builder: (context, selectedIndex, _) {
+              return IndexedStack(
+                index: selectedIndex,
+                children: pages,
+              );
+            },
+            valueListenable: _selectedIndex,
+          ),
+          bottomNavigationBar: ValueListenableBuilder(
+            builder: (context, selectedIndex, _) {
+              return BottomNavigationBar(
+                items: const [
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.home_outlined), label: 'Asosiy'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.book_outlined), label: 'Qur\'on'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.lightbulb_outlined), label: 'Duolar'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.favorite_border_outlined),
+                      label: 'Saqlanganlar'),
+                ],
+                showSelectedLabels: true,
+                currentIndex: selectedIndex,
+                selectedItemColor: Constants.primaryColor,
+                showUnselectedLabels: true,
+                unselectedItemColor: Constants.greyColor,
+                onTap: (index) {
+                  setState(() {
+                    _selectedIndex.value = index;
+                  });
+                },
+              );
+            },
+            valueListenable: _selectedIndex,
+          )),
       BlocBuilder<QuranBloc, QuranState>(builder: (context, state) {
         if (state is QuranLoading) {
           return Scaffold(

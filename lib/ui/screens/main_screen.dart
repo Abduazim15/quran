@@ -22,7 +22,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     pages = [
-      HomeScreen(selectedIndexNotifier: _selectedIndex,),
+      HomeScreen(
+        selectedIndexNotifier: _selectedIndex,
+      ),
       QuranPage(),
       DuaPage(),
       const FavouritedPage(),
@@ -34,6 +36,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Stack(children: [
       Scaffold(
+          backgroundColor: Colors.white,
           body: ValueListenableBuilder(
             builder: (context, selectedIndex, _) {
               return IndexedStack(
